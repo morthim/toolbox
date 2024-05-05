@@ -1,0 +1,55 @@
+---
+- name: Install handy tools
+  hosts: localhost
+  vars:
+    software_version:
+      k9s: 0.27.4
+      lazydocker: 0.21.1
+      zellij: 0.38.1
+      helm: 3.12.3
+      helmfile: 0.151.0
+      vault: 1.9.6
+      kustomize: 5.1.1
+    software_list:
+    - name: k9s
+      url: "https://github.com/derailed/k9s/releases/download/v{{ software_version.k9s }}/k9s_Linux_amd64.tar.gz"
+    - name: lazydocker
+      url: "https://github.com/jesseduffield/lazydocker/releases/download/v{{ software_version.lazydocker }}/lazydocker_{{ software_version.lazydocker }}_Linux_x86_64.tar.gz"
+    - name: zellij
+      url: "https://github.com/zellij-org/zellij/releases/download/v{{ software_version.zellij }}/zellij-x86_64-unknown-linux-musl.tar.gz"
+    - name: helm
+      url: "https://get.helm.sh/helm-v{{ software_version.helm }}-linux-amd64.tar.gz"
+      filename: "linux-amd64/helm"
+      extra_opts:
+      - "--strip-components=1"
+    - name: helmfile
+      url: "https://github.com/helmfile/helmfile/releases/download/v{{ software_version.helmfile }}/helmfile_{{ software_version.helmfile }}_linux_amd64.tar.gz"
+    - name: vault
+      url: "https://releases.hashicorp.com/vault/{{ software_version.vault }}/vault_{{ software_version.vault }}_linux_amd64.zip"
+    - name: kustomize
+      url: "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v{{ software_version.kustomize }}/kustomize_v{{ software_version.kustomize }}_linux_amd64.tar.gz"
+
+  tasks:
+    - name: Install unzip
+      apt:
+        name: unzip
+      become: true
+    - name: Add several alias in .bash_aliases
+      lineinfile:
+        path: ~/.bash_aliases
+        line: "{{ item }}"
+      loop:
+        - alias k9s='export COLORTERM=truecolor && k9s'
+        - alias lzd='lazydocker'
+        - alias z='zellij options --simplified-ui true'
+    - name: Install {{ item.name }}
+      unarchive:
+        src: "{{ item.url }}"
+        dest: "/usr/local/bin"
+        include:
+        - "{{ item.filename | default(item.name) }}"
+        extra_opts: "{{ item.extra_opts | default(omit) }}"
+        remote_src: true
+      become: true
+      loop: "{{software_list}}"
+
