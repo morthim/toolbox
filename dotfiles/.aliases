@@ -1,0 +1,14 @@
+alias rm='rm -i'
+alias ll='ls -l'
+alias grep='grep --color'
+
+# Docker
+alias dca='docker ps -a'
+
+# Docker Compose
+alias dc='docker compose'
+alias dcpud='docker compose pull && docker compose up -d'
+alias dcc='docker compose config'
+alias dcud='docker compose up -d'
+alias dcl='docker compose logs -f'
+alias dcr='docker compose restart'
