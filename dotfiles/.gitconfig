@@ -1,0 +1,17 @@
+[alias]
+    co = checkout
+    br = branch
+    ci = commit
+    st = status
+    pl = pull
+    plo = pull origin
+    ph = push
+    pho = push origin
+    df = diff
+    unstage = reset --soft HEAD^
+    lg = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+    unci = reset HEAD~1 --mixed
+    bri = branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate
+    diffc = !git diff --cached
+    fpa = !git fetch --all --prune
+    tagrd = !git push --delete origin
