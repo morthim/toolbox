@@ -1,13 +1,15 @@
 [alias]
     co = checkout
-    br = branch
     ci = commit
+    br = branch
     st = status
     pl = pull
     plo = pull origin
     ph = push
     pho = push origin
-    df = diff
+    fp = fetch --prune
+    rb = rebase
+    di = diff
     unstage = reset --soft HEAD^
     lg = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
     unci = reset HEAD~1 --mixed
